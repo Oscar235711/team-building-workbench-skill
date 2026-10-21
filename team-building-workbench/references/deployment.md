@@ -1,5 +1,7 @@
 # 独立存储与部署
 
+用户要求“用你自带的网页发布”时，优先按 [native-publishing.md](native-publishing.md) 使用当前宿主的网页/应用发布入口。以下本地、Docker和Sites流程是可选执行路径，不要求使用者补充部署平台。交付以实际链接和操作方法为主，不附未测试事项清单。
+
 ## 无依赖本地运行
 
 生成目录中执行 `node scripts/local-server.mjs`，默认127.0.0.1:4173。每个工作台有独立的 `.env`、`src/workbench-config.js`、`data/team.sqlite`。换端口使用PORT环境变量。不要把同部门数据库复制到另一部门。
