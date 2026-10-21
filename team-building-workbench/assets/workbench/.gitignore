@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+data/
+backups/
+node_modules/
+dist/
+.wrangler/
+outputs/
+.sites-runtime/
+.dev.vars*
+*.sqlite*
+*.pem

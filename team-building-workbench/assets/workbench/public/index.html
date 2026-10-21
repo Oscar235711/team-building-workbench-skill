@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f87538" />
+    <meta name="description" content="团建方案与协作工作台" />
+    <title>团建工作台</title>
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div id="app-shell" class="app-shell">
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="brand-lockup">
+            <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div>
+              <strong id="workbench-title">团建工作台</strong>
+              <span class="brand-caption">一起拼出活动安排</span>
+            </div>
+          </div>
+          <button id="register-trigger" class="button button--soft" type="button">登录 / 登记</button>
+        </div>
+        <div class="topbar-center">
+          <span class="eyebrow">当前活动期</span>
+          <strong id="quarter-name">加载中…</strong>
+          <span id="quarter-status" class="status-pill status-pill--open">读取中</span>
+        </div>
+        <div class="topbar-actions">
+          <button id="user-menu-trigger" class="profile-chip" type="button" hidden>
+            <span id="profile-avatar" class="avatar">·</span>
+            <span id="profile-label">我的方案</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="app-body">
+        <aside id="sidebar" class="sidebar" aria-label="主导航">
+          <div class="sidebar-section-title">工作台</div>
+          <nav class="main-nav">
+            <button type="button" class="nav-item is-active" data-view="dashboard"><span class="nav-icon">⌂</span><span>总览</span><span class="nav-mark"></span></button>
+            <button type="button" class="nav-item" data-view="builder"><span class="nav-icon">✦</span><span>做方案</span><span class="nav-mark"></span></button>
+            <button type="button" class="nav-item" data-view="stats"><span class="nav-icon">◒</span><span>看大家</span><span class="nav-mark"></span></button>
+            <button type="button" class="nav-item" data-view="history"><span class="nav-icon">↺</span><span>历史参考</span><span class="nav-mark"></span></button>
+            <button type="button" class="nav-item" data-view="mine"><span class="nav-icon">♡</span><span>我的方案</span><span class="nav-mark"></span></button>
+          </nav>
+          <div class="sidebar-rule"></div>
+          <button type="button" class="nav-item nav-item--admin" data-view="admin"><span class="nav-icon">⚙</span><span>管理入口</span><span class="nav-mark"></span></button>
+          <div class="sidebar-footer">
+            <div class="sidebar-note">
+              <span class="note-icon">i</span>
+              <p>每人最多提交两套方案。提交后仍可继续编辑，最新保存版本会进入投票统计。</p>
+            </div>
+            <button type="button" class="text-button" data-action="open-register">登录、登记或切换参与人 →</button>
+          </div>
+        </aside>
+
+        <main id="main-content" class="main-content">
+          <section id="view-dashboard" class="view is-visible" aria-labelledby="dashboard-title">
+            <div id="dashboard-content"></div>
+          </section>
+          <section id="view-builder" class="view" aria-labelledby="builder-title">
+            <div id="builder-content"></div>
+          </section>
+          <section id="view-stats" class="view" aria-labelledby="stats-title">
+            <div id="stats-content"></div>
+          </section>
+          <section id="view-history" class="view" aria-labelledby="history-title">
+            <div id="history-content"></div>
+          </section>
+          <section id="view-mine" class="view" aria-labelledby="mine-title">
+            <div id="mine-content"></div>
+          </section>
+          <section id="view-admin" class="view" aria-labelledby="admin-title">
+            <div id="admin-content"></div>
+          </section>
+        </main>
+      </div>
+
+      <nav id="mobile-nav" class="mobile-nav" aria-label="移动端主导航">
+        <button type="button" class="nav-item is-active" data-view="dashboard"><span class="nav-icon">⌂</span><span>总览</span></button>
+        <button type="button" class="nav-item" data-view="builder"><span class="nav-icon">✦</span><span>做方案</span></button>
+        <button type="button" class="nav-item" data-view="stats"><span class="nav-icon">◒</span><span>看大家</span></button>
+        <button type="button" class="nav-item" data-view="mine"><span class="nav-icon">♡</span><span>我的</span></button>
+        <button type="button" class="nav-item" data-view="history"><span class="nav-icon">↺</span><span>历史</span></button>
+      </nav>
+    </div>
+
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+    <dialog id="register-dialog" class="modal-dialog">
+      <form id="register-form" class="modal-card" method="dialog">
+        <button class="modal-close" type="button" data-action="close-modal" aria-label="关闭">×</button>
+        <div class="modal-kicker">加入工作台</div>
+        <h2>登录 / 登记参与</h2>
+        <p class="modal-intro">请使用本人真实工号后三位和昵称。工号仅向网站所有者展示，其他同事不可见。未登记时默认是游客模式，不参与最终方案形成；每人每个活动期最多提交两份方案，提交后可修改。共享词库提交后不可修改。</p>
+        <p class="modal-intro">已登记：填写工号和原昵称即可登录。首次参与：填写未登记的工号和昵称完成登记。一个工号只能登记一次，不能用其他昵称重复注册。</p>
+        <label class="field-label" for="register-code">工号后三位</label>
+        <input id="register-code" class="text-input" name="code" inputmode="numeric" maxlength="3" pattern="[0-9]{3}" placeholder="例如 007" required />
+        <label class="field-label" for="register-nickname">昵称</label>
+        <input id="register-nickname" class="text-input" name="nickname" maxlength="30" placeholder="大家怎么称呼你？" required />
+        <div id="register-error" class="form-error" role="alert"></div>
+        <button class="button button--primary button--wide" type="submit">登录 / 首次登记</button>
+        <button class="text-button text-button--center" type="button" data-action="continue-anonymous">先浏览，不登记</button>
+      </form>
+    </dialog>
+
+    <dialog id="preview-dialog" class="modal-dialog modal-dialog--wide">
+      <div class="modal-card modal-card--wide">
+        <button class="modal-close" type="button" data-action="close-modal" aria-label="关闭">×</button>
+        <div class="modal-kicker">提交前最后一眼</div>
+        <h2 id="preview-title">方案预览</h2>
+        <div id="preview-content" class="preview-content"></div>
+        <div class="modal-actions">
+          <button class="button button--soft" type="button" data-action="close-modal">返回修改</button>
+          <button id="preview-submit" class="button button--primary" type="button" data-action="submit-preview">确认提交</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="detail-dialog" class="modal-dialog modal-dialog--wide">
+      <div class="modal-card modal-card--wide">
+        <button class="modal-close" type="button" data-action="close-modal" aria-label="关闭">×</button>
+        <div id="detail-content" class="detail-content"></div>
+      </div>
+    </dialog>
+
+    <dialog id="history-dialog" class="modal-dialog">
+      <div class="modal-card">
+        <button class="modal-close" type="button" data-action="close-modal" aria-label="关闭">×</button>
+        <div id="history-detail-content"></div>
+      </div>
+    </dialog>
+
+    <dialog id="term-dialog" class="modal-dialog modal-dialog--wide">
+      <form id="term-dialog-form" class="modal-card modal-card--wide">
+        <button class="modal-close" type="button" data-action="close-modal" aria-label="关闭">×</button>
+        <div class="modal-kicker">共享词库</div>
+        <h2 id="term-dialog-title">补充一个新项目</h2>
+        <p class="modal-intro">普通参与者可以补充玩法或项目；时间词条由管理员维护。项目名称和所属玩法必填，估价与地点可留空。缺失信息的方案会标记“无估价”“无地点”，仍可提交。已有分类属性不能由普通参与者改动。</p>
+        <input type="hidden" name="mode" value="new" />
+        <input type="hidden" name="termId" value="" />
+        <input type="hidden" name="version" value="" />
+        <input type="hidden" name="historyId" value="" />
+        <input type="hidden" name="pricingBasis" value="component" />
+        <div class="form-row">
+          <label class="form-field"><span class="form-label">层级</span><select class="select-input" name="level"><option value="3">3 · 具体项目</option><option value="2">2 · 玩法</option></select></label>
+          <label class="form-field"><span class="form-label">名称</span><input class="text-input" name="name" maxlength="80" required /></label>
+        </div>
+        <div class="form-row">
+          <label class="form-field"><span class="form-label">所属玩法（具体项目必填）</span><select class="select-input" name="parentId"><option value="">选择所属玩法</option></select></label>
+          <label class="form-field"><span class="form-label" id="term-price-label" data-pricing-label>人均费用预估（元）</span><input class="text-input" type="number" name="price" min="0" step="0.01" placeholder="可留空；允许填 0" /></label>
+        </div>
+        <div class="form-row">
+          <label class="form-field"><span class="form-label">计价方式</span><select class="select-input" name="pricingMode" data-action="pricing-mode"><option value="per_person">人均（按预计人数）</option><option value="per_event">每次（整场一次）</option></select></label>
+        </div>
+        <div class="form-row">
+          <label class="form-field"><span class="form-label">地点（可选，城市和区）</span><input class="text-input" name="location" maxlength="240" placeholder="可填写城市和区" /></label>
+          <label class="form-field"><span class="form-label">基础活动类型</span><select class="select-input" name="baseType"><option value="other">其他</option><option value="travel">出游</option><option value="tea">下午茶</option><option value="dinner">晚餐</option><option value="indoor">室内活动</option></select></label>
+        </div>
+        <div class="form-row">
+          <label class="form-field"><span class="form-label">适用时段</span><select class="select-input" name="dayType"><option value="weekend">周末</option><option value="weekday">工作日</option></select></label>
+          <label class="form-field"><span class="form-label">大型室内项目</span><select class="select-input" name="largeIndoor"><option value="unknown">未知 / 不适用</option><option value="true">是</option><option value="false">否</option></select></label>
+        </div>
+        <label class="form-field"><span class="form-label">说明或参考链接（可选）</span><textarea class="textarea-input" name="note" maxlength="1000"></textarea></label>
+        <div id="term-dialog-error" class="form-error"></div>
+        <div class="modal-actions"><button type="button" class="button button--soft" data-action="close-modal">取消</button><button type="submit" class="button button--primary">保存到共享词库</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="account-action-dialog" class="modal-dialog">
+      <div class="modal-card">
+        <button class="modal-close" type="button" data-action="close-modal" aria-label="关闭">×</button>
+        <div class="modal-kicker">管理员 · 账号管理</div>
+        <h2 id="account-action-title">确认账号操作</h2>
+        <p id="account-action-description" class="modal-intro"></p>
+        <div id="account-action-target" class="account-action-target"></div>
+        <label id="account-confirm-field" class="form-field" hidden><span class="form-label">输入该账号的工号后三位，确认删除</span><input id="account-confirm-code" class="text-input" type="text" inputmode="numeric" maxlength="3" autocomplete="off" data-action="account-confirm-code" /></label>
+        <div id="account-action-error" class="form-error" role="alert"></div>
+        <div class="modal-actions"><button type="button" class="button button--soft" data-action="close-modal">取消</button><button id="account-action-confirm" type="button" class="button button--primary" data-action="confirm-account-action">确认</button></div>
+      </div>
+    </dialog>
+
+    <script src="/cloud.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>

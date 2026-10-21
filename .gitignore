@@ -1,0 +1,9 @@
+outputs/
+work/
+node_modules/
+.env
+.env.*
+*.sqlite*
+*.pem
+**/src/generated/
+**/dist/

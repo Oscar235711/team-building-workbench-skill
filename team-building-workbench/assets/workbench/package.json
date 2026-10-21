@@ -1,0 +1,9 @@
+{
+  "name": "team-building-workbench",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=24.0.0"},
+  "scripts": {"start": "node scripts/local-server.mjs", "build": "node scripts/build-worker.mjs", "backup": "node scripts/backup.mjs"},
+  "devDependencies": {"esbuild": "0.28.0"}
+}
