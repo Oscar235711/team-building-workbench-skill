@@ -1,0 +1,13 @@
+.git
+.env
+.env.*
+.dev.vars*
+.openai
+data
+backups
+node_modules
+dist
+outputs
+.wrangler
+*.sqlite*
+*.pem

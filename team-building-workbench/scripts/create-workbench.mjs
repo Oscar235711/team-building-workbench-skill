@@ -4,7 +4,9 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const template=fileURLToPath(new URL('../assets/workbench/',import.meta.url));
-function copyTemplate(from,to){mkdirSync(to,{recursive:true});for(const entry of readdirSync(from)){const source=path.join(from,entry),dest=path.join(to,entry),info=lstatSync(source);if(info.isSymbolicLink())throw new Error('模板不能包含符号链接');if(info.isDirectory())copyTemplate(source,dest);else if(info.isFile())copyFileSync(source,dest);}}
+const templateFiles=new Set(['.gitignore','.dockerignore','Dockerfile','package.json','package-lock.json','public/index.html','public/app.js','public/style.css','public/cloud.js','src/api.js','src/domain.js','src/sqlite.js','src/seed.js','src/web.js','src/http-origin.js','scripts/local-server.mjs','scripts/backup.mjs','scripts/build-worker.mjs','worker/index.js']);
+export function validateTemplate(from){const files=[];function walk(dir){for(const entry of readdirSync(dir)){const source=path.join(dir,entry),info=lstatSync(source),relative=path.relative(from,source).split(path.sep).join('/');if(info.isSymbolicLink())throw new Error('模板不能包含符号链接');if(info.isDirectory())walk(source);else if(info.isFile()){if(!templateFiles.has(relative)&&!/^drizzle\/\d{4}_[a-z0-9_]+\.sql$/.test(relative))throw new Error('模板含不允许的文件：'+relative);files.push(relative);}}}walk(from);return files;}
+function copyTemplate(from,to,files){for(const file of files){const dest=path.join(to,file);mkdirSync(path.dirname(dest),{recursive:true});copyFileSync(path.join(from,file),dest);}}
 export function money(value,{optional=false}={}){
  if(value===undefined||value===null||value===''){if(optional)return null;throw new Error('团建总预算必填（人民币元）');}
  const s=String(value);if(!/^\d{1,7}(?:\.\d{1,2})?$/.test(s))throw new Error('金额须为非负元数，最多两位小数');
@@ -37,7 +39,7 @@ export function createWorkbench(options){
  const config=normalizeOptions(options);if(!options.out)throw new Error('请提供输出目录--out');const out=path.resolve(options.out);
  if(existsSync(out))throw new Error('输出目录已存在，请使用新目录，避免覆盖工作台');
  if(out===template||out.startsWith(template+path.sep))throw new Error('输出目录不能位于模板内');
- copyTemplate(template,out);
+ const files=validateTemplate(template);mkdirSync(path.dirname(out),{recursive:true});mkdirSync(out);copyTemplate(template,out,files);
  writeFileSync(path.join(out,'src/workbench-config.js'),'export default '+JSON.stringify(config,null,2)+';\n',{encoding:'utf8'});
  const secret=randomBytes(36).toString('base64url');writeFileSync(path.join(out,'.env'),`ADMIN_TOKEN=${secret}\nDATABASE_PATH=data/team.sqlite\nHOST=127.0.0.1\nPORT=4173\n`,{encoding:'utf8',mode:0o600});
  mkdirSync(path.join(out,'.openai'),{recursive:true});writeFileSync(path.join(out,'.openai/hosting.json'),JSON.stringify({d1:'DB',r2:null})+'\n');

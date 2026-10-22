@@ -1,6 +1,6 @@
 # 团建工作台 Skill
 
-让外部 Agent 根据**团建人数、团建总预算**，创建独立的部门团建工作台。参考活动项目及费用可选，时间和玩法词库自动预置，管理员创建后可维护。
+让外部 Agent 根据**团建人数、团建总预算**创建独立的团建工作台。参考活动及费用选填，时间和玩法词库自动预置。也可参考成员登记、信息收集、统计与权限结构，搭建部门内部工作台。
 
 ## 安装到 Agent
 
@@ -34,7 +34,7 @@ node scripts/local-server.mjs
 
 默认访问 `http://127.0.0.1:4173`。随机管理员令牌位于生成目录的 `.env`，不要提交或分享给普通参与者。所有账号、会话、方案、评论保存在该实例的服务器数据库中。不同部门请生成不同目录及独立数据库/存储卷。
 
-优先使用所在平台自带的网页/应用发布能力，Skill内附Claude、Codex、千问办公、WorkBuddy、DeepSeek的调用提示词，按当前会话实际工具适配。也支持Docker持久卷和Worker/D1。模型直接交付链接和管理员使用方法，不要求完整测试报告，也不在结尾罗列“未经测试”事项。原生入口与共享数据接入方式见 [发布提示词](team-building-workbench/references/native-publishing.md)。
+优先使用所在平台已有的网页/应用发布能力，也支持Docker持久卷和Worker/D1。入口与共享数据接入见 [发布提示词](team-building-workbench/references/native-publishing.md)。交付以实际访问链接和管理员使用方法为主。
 
 ## 功能
 
@@ -57,5 +57,13 @@ node --test tests/*.test.mjs
 ```
 
 测试生成器、金额、空存储隔离、登录和管理员词库规则，并在一次性数据库里验证方案修改、留言、删除恢复。构建测试需要在生成实例安装开发依赖后执行 `npm run build`。
+
+## 发布包
+
+```text
+python scripts/package-skill.py --version 1.0.2
+```
+
+按白名单生成 `outputs/team-building-workbench-v1.0.2.zip`，根目录即 `SKILL.md`。打包后重新读取ZIP，核对文件、源码摘要、路径及脱敏规则；旁边的manifest记录每个文件的SHA256。技术检查记录见 [VERIFICATION.md](docs/VERIFICATION.md)。
 
 Licensed under MIT.

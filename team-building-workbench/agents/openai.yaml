@@ -1,4 +1,4 @@
 interface:
-  display_name: "团建工作台"
-  short_description: "只需人数和总预算，生成部门专属的团建建议、方案投票与管理员工作台"
+  display_name: "团建与部门工作台"
+  short_description: "人数和预算即可创建团建工作台，也可参考搭建部门信息收集与内部协作工具"
   default_prompt: "使用 $team-building-workbench，为我们部门创建团建工作台，优先用你所在平台自带的网页或应用发布功能发布并给我访问链接。"

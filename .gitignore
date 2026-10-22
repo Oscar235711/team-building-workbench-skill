@@ -1,6 +1,7 @@
 outputs/
 work/
 node_modules/
+__pycache__/
 .env
 .env.*
 *.sqlite*

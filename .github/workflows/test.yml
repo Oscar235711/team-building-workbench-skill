@@ -15,3 +15,9 @@ jobs:
           node-version: '24'
       - run: node --test tests/*.test.mjs
       - run: node scripts/audit-package.mjs
+      - run: node team-building-workbench/scripts/create-workbench.mjs --people 20 --budget 6000 --out work/ci
+      - run: npm ci --no-audit --no-fund
+        working-directory: work/ci
+      - run: npm run build
+        working-directory: work/ci
+      - run: node scripts/smoke-worker.mjs work/ci
